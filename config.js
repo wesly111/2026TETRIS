@@ -1,2 +1,5 @@
-// Only a public publishable key or legacy anon key belongs here. Never use service_role or secret keys.
-window.BLOCK_TIME_CONFIG = { supabaseUrl: '', supabasePublishableKey: '' };
+// Public browser configuration. Access to records is enforced by database RLS.
+window.BLOCK_TIME_CONFIG = {
+  supabaseUrl: 'https://ultmxaxaoyqwdjgfuxvi.supabase.co',
+  supabasePublishableKey: 'sb_publishable_xHiGkSyOchjJts1SvgjIlg_MEDrbH-q'
+};

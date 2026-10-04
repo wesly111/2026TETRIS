@@ -20,7 +20,7 @@
   finally{byId('retrySave').disabled=false}
  }
  byId('retrySave').onclick=()=>{if(pending)void save(pending)};
- window.blockTimeAccount={start(){gameOwner=user?.id||null;runId=crypto.randomUUID();byId('saveStatus').textContent=gameOwner?'這一局將儲存到目前帳號。':'訪客遊玩，這一局只記錄在本機。'},finish(game){if(!gameOwner||!runId)return;const row={id:runId,user_id:gameOwner,...game};runId=null;if(user?.id!==gameOwner){byId('saveStatus').textContent='帳號已變更，這一局未同步到雲端。';return}void save(row)}};
+ window.blockTimeAccount={getClient:()=>client,getUser:()=>user,start(){gameOwner=user?.id||null;runId=crypto.randomUUID();byId('saveStatus').textContent=gameOwner?'這一局將儲存到目前帳號。':'訪客遊玩，這一局只記錄在本機。'},finish(game){if(!gameOwner||!runId)return;const row={id:runId,user_id:gameOwner,...game};runId=null;if(user?.id!==gameOwner){byId('saveStatus').textContent='帳號已變更，這一局未同步到雲端。';return}void save(row)}};
  byId('accountForm').addEventListener('submit',async e=>{e.preventDefault();if(!client||busy)return;busy=true;byId('loginButton').disabled=byId('signupButton').disabled=true;const signup=e.submitter?.id==='signupButton';const email=byId('email').value.trim(),password=byId('password').value;status(signup?'正在註冊…':'正在登入…');
   try{const credentials={email,password};const result=signup?await client.auth.signUp({...credentials,options:{emailRedirectTo:location.origin+location.pathname}}):await client.auth.signInWithPassword(credentials);if(result.error)throw result.error;byId('password').value='';if(signup&&!result.data.session)status('請查看信箱並完成驗證，再回來登入。');else status('已登入，完成一局即可儲存分數。')}
   catch(err){status(friendly(err))}finally{busy=false;byId('loginButton').disabled=byId('signupButton').disabled=false}
